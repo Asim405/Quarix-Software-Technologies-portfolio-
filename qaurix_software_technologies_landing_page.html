@@ -370,49 +370,51 @@
                         <p class="text-slate-400 text-sm mt-2">Select your project requirements below to receive a real-time estimate.</p>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <form id="consultationForm" action="https://formspree.io/f/mqpparvd" method="POST" class="space-y-6">
+                    <input type="hidden" name="_subject" value="New project consultation request">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         
                         <!-- Option 1: Type -->
                         <div>
-                            <label class="block text-sm font-semibold text-slate-300 mb-3">Project Type</label>
-                            <select id="estType" onchange="calculateEstimate()" class="w-full bg-slate-900 border border-brand-border rounded-xl px-4 py-3 text-slate-200 focus:border-cyan-500 focus:outline-none">
-                                <option value="3500">AI / LLM Integration ($3,500 base)</option>
-                                <option value="5000">Custom SaaS Web Application ($5,000 base)</option>
-                                <option value="4000">Cross-Platform Mobile App ($4,000 base)</option>
-                                <option value="2000">Marketing & Landing Page ($2,000 base)</option>
+                            <label for="estType" class="block text-sm font-semibold text-slate-300 mb-3">Project Type</label>
+                            <select id="estType" name="service_type" required onchange="calculateEstimate()" class="w-full bg-slate-900 border border-brand-border rounded-xl px-4 py-3 text-slate-200 focus:border-cyan-500 focus:outline-none">
+                                <option value="AI / LLM Integration" data-base-price="3500">AI / LLM Integration ($3,500 base)</option>
+                                <option value="Custom SaaS Web Application" data-base-price="5000">Custom SaaS Web Application ($5,000 base)</option>
+                                <option value="Cross-Platform Mobile App" data-base-price="4000">Cross-Platform Mobile App ($4,000 base)</option>
+                                <option value="Marketing & Landing Page" data-base-price="2000">Marketing & Landing Page ($2,000 base)</option>
                             </select>
                         </div>
 
                         <!-- Option 2: Complexity -->
                         <div>
-                            <label class="block text-sm font-semibold text-slate-300 mb-3">Complexity & Features</label>
-                            <select id="estComplexity" onchange="calculateEstimate()" class="w-full bg-slate-900 border border-brand-border rounded-xl px-4 py-3 text-slate-200 focus:border-cyan-500 focus:outline-none">
-                                <option value="1">Standard (Core Features & Auth)</option>
-                                <option value="1.5">Advanced (Integrations & Analytics)</option>
-                                <option value="2">Enterprise (Custom AI Models & High Security)</option>
+                            <label for="estComplexity" class="block text-sm font-semibold text-slate-300 mb-3">Complexity & Features</label>
+                            <select id="estComplexity" name="complexity" required onchange="calculateEstimate()" class="w-full bg-slate-900 border border-brand-border rounded-xl px-4 py-3 text-slate-200 focus:border-cyan-500 focus:outline-none">
+                                <option value="Standard (Core Features & Auth)" data-multiplier="1">Standard (Core Features & Auth)</option>
+                                <option value="Advanced (Integrations & Analytics)" data-multiplier="1.5">Advanced (Integrations & Analytics)</option>
+                                <option value="Enterprise (Custom AI Models & High Security)" data-multiplier="2">Enterprise (Custom AI Models & High Security)</option>
                             </select>
                         </div>
 
                         <!-- Option 3: Timeline -->
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-semibold text-slate-300 mb-3">Target Timeline Speed</label>
+                            <span class="block text-sm font-semibold text-slate-300 mb-3">Target Timeline Speed</span>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                                 <label class="cursor-pointer speed-option">
-                                    <input type="radio" name="speed" value="1" checked onchange="calculateEstimate()" class="peer hidden">
+                                    <input type="radio" name="timeline_speed" value="Standard" data-multiplier="1" checked onchange="calculateEstimate()" class="peer hidden">
                                     <div class="p-3 sm:p-4 rounded-xl border border-brand-border bg-slate-900/60 peer-checked:border-cyan-500 peer-checked:bg-cyan-950/30 text-center transition-all">
                                         <div class="font-bold text-white text-sm">Standard</div>
                                         <div class="text-xs text-slate-400 mt-1">Normal Pace</div>
                                     </div>
                                 </label>
                                 <label class="cursor-pointer speed-option">
-                                    <input type="radio" name="speed" value="1.2" onchange="calculateEstimate()" class="peer hidden">
+                                    <input type="radio" name="timeline_speed" value="Accelerated" data-multiplier="1.2" onchange="calculateEstimate()" class="peer hidden">
                                     <div class="p-3 sm:p-4 rounded-xl border border-brand-border bg-slate-900/60 peer-checked:border-cyan-500 peer-checked:bg-cyan-950/30 text-center transition-all">
                                         <div class="font-bold text-white text-sm">Accelerated</div>
                                         <div class="text-xs text-slate-400 mt-1">+20% Speed</div>
                                     </div>
                                 </label>
                                 <label class="cursor-pointer speed-option">
-                                    <input type="radio" name="speed" value="1.4" onchange="calculateEstimate()" class="peer hidden">
+                                    <input type="radio" name="timeline_speed" value="Sprint / Rush" data-multiplier="1.4" onchange="calculateEstimate()" class="peer hidden">
                                     <div class="p-3 sm:p-4 rounded-xl border border-brand-border bg-slate-900/60 peer-checked:border-cyan-500 peer-checked:bg-cyan-950/30 text-center transition-all">
                                         <div class="font-bold text-white text-sm">Sprint / Rush</div>
                                         <div class="text-xs text-slate-400 mt-1">Priority Delivery</div>
@@ -433,10 +435,28 @@
                             <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Estimated Delivery</div>
                             <div id="estTime" class="text-lg sm:text-xl font-bold text-cyan-400 mt-1">3 - 4 Weeks</div>
                         </div>
-                        <a href="#contact" class="w-full md:w-auto shrink-0 px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 font-bold text-white shadow-neon hover:scale-105 transition-all text-center">
-                            Lock In Estimate
-                        </a>
+                        <input type="hidden" id="estimatedBudget" name="estimated_budget">
+                        <input type="hidden" id="estimatedDelivery" name="estimated_delivery">
                     </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="consultationName" class="block text-xs font-semibold text-slate-300 mb-2">Full Name</label>
+                            <input id="consultationName" type="text" name="name" required autocomplete="name" placeholder="Your Name" class="w-full bg-slate-900 border border-brand-border rounded-xl px-4 py-3 text-slate-200 text-sm focus:border-cyan-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label for="consultationEmail" class="block text-xs font-semibold text-slate-300 mb-2">Work Email</label>
+                            <input id="consultationEmail" type="email" name="email" required autocomplete="email" placeholder="Name@Company.com" class="w-full bg-slate-900 border border-brand-border rounded-xl px-4 py-3 text-slate-200 text-sm focus:border-cyan-500 focus:outline-none">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="consultationMessage" class="block text-xs font-semibold text-slate-300 mb-2">Project Message</label>
+                            <textarea id="consultationMessage" name="message" rows="4" required placeholder="Tell us about your goals, requirements, and timeline..." class="w-full bg-slate-900 border border-brand-border rounded-xl px-4 py-3 text-slate-200 text-sm focus:border-cyan-500 focus:outline-none"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 font-bold text-white shadow-neon hover:shadow-glow transition-all">
+                        Request Project Consultation <i class="fa-solid fa-paper-plane ml-2 text-xs"></i>
+                    </button>
+                    </form>
 
                 </div>
             </div>
@@ -618,7 +638,7 @@
                             <div class="space-y-4 text-sm text-slate-300">
                                 <div class="flex items-center gap-3 min-w-0">
                                     <div class="w-8 h-8 shrink-0 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center"><i class="fa-solid fa-envelope"></i></div>
-                                    <span class="break-all">contact@qaurix.tech</span>
+                                    <a href="mailto:contact@qaurix.tech" class="break-all hover:text-cyan-400 transition-colors">contact@qaurix.tech</a>
                                 </div>
                                 <div class="flex items-center gap-3 min-w-0">
                                     <div class="w-8 h-8 shrink-0 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center"><i class="fa-solid fa-location-dot"></i></div>
@@ -628,22 +648,24 @@
                         </div>
 
                         <!-- Form -->
-                        <form id="contactForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                        <form id="contactForm" action="https://formspree.io/f/mqpparvd" method="POST" class="space-y-4">
+                            <input type="hidden" name="_subject" value="New website project inquiry">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 mb-2">Full Name</label>
-                                <input type="text" required placeholder="John Doe" class="w-full bg-slate-900 border border-brand-border rounded-xl px-4 py-3 text-slate-200 text-sm focus:border-cyan-500 focus:outline-none">
+                                <label for="contactName" class="block text-xs font-semibold text-slate-300 mb-2">Full Name</label>
+                                <input id="contactName" type="text" name="name" required autocomplete="name" placeholder="Your Name" class="w-full bg-slate-900 border border-brand-border rounded-xl px-4 py-3 text-slate-200 text-sm focus:border-cyan-500 focus:outline-none">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 mb-2">Work Email</label>
-                                <input type="email" required placeholder="john@company.com" class="w-full bg-slate-900 border border-brand-border rounded-xl px-4 py-3 text-slate-200 text-sm focus:border-cyan-500 focus:outline-none">
+                                <label for="contactEmail" class="block text-xs font-semibold text-slate-300 mb-2">Work Email</label>
+                                <input id="contactEmail" type="email" name="email" required autocomplete="email" placeholder="Name@Company.com" class="w-full bg-slate-900 border border-brand-border rounded-xl px-4 py-3 text-slate-200 text-sm focus:border-cyan-500 focus:outline-none">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 mb-2">Project Brief</label>
-                                <textarea rows="4" required placeholder="Tell us about your project, goals, and timeline..." class="w-full bg-slate-900 border border-brand-border rounded-xl px-4 py-3 text-slate-200 text-sm focus:border-cyan-500 focus:outline-none"></textarea>
+                                <label for="contactMessage" class="block text-xs font-semibold text-slate-300 mb-2">Project Brief</label>
+                                <textarea id="contactMessage" name="message" rows="4" required placeholder="Tell us about your project, goals, and timeline..." class="w-full bg-slate-900 border border-brand-border rounded-xl px-4 py-3 text-slate-200 text-sm focus:border-cyan-500 focus:outline-none"></textarea>
                             </div>
                             <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 font-bold text-white shadow-neon hover:shadow-glow transition-all">
                                 Send Inquiry <i class="fa-solid fa-paper-plane ml-2 text-xs"></i>
                             </button>
+                            <p class="text-xs text-slate-400 text-center">Your inquiry will be sent securely to our team.</p>
                         </form>
                     </div>
                 </div>
@@ -740,18 +762,25 @@
 
         // Instant Cost & Timeline Calculator
         function calculateEstimate() {
-            const baseType = parseFloat(document.getElementById('estType').value);
-            const complexity = parseFloat(document.getElementById('estComplexity').value);
-            const speed = parseFloat(document.querySelector('input[name="speed"]:checked').value);
+            const selectedType = document.getElementById('estType').selectedOptions[0];
+            const selectedComplexity = document.getElementById('estComplexity').selectedOptions[0];
+            const selectedSpeed = document.querySelector('input[name="timeline_speed"]:checked');
+            const baseType = parseFloat(selectedType.dataset.basePrice);
+            const complexity = parseFloat(selectedComplexity.dataset.multiplier);
+            const speed = parseFloat(selectedSpeed.dataset.multiplier);
 
             const total = Math.round(baseType * complexity * speed);
             const maxTotal = Math.round(total * 1.25);
+            const budget = `$${total.toLocaleString()} - $${maxTotal.toLocaleString()}`;
 
-            document.getElementById('estCost').innerText = `$${total.toLocaleString()} - $${maxTotal.toLocaleString()}`;
+            document.getElementById('estCost').innerText = budget;
 
             let weeks = Math.round((baseType / 1000) * complexity / speed);
             if (weeks < 2) weeks = 2;
-            document.getElementById('estTime').innerText = `${weeks} - ${weeks + 2} Weeks`;
+            const delivery = `${weeks} - ${weeks + 2} Weeks`;
+            document.getElementById('estTime').innerText = delivery;
+            document.getElementById('estimatedBudget').value = budget;
+            document.getElementById('estimatedDelivery').value = delivery;
         }
 
         // FAQ Toggle
@@ -763,12 +792,7 @@
             icon.classList.toggle('rotate-180');
         }
 
-        // Form Submit Handler
-        function handleFormSubmit(event) {
-            event.preventDefault();
-            alert("Thank you! Your inquiry has been submitted. The QAURIX team will contact you shortly.");
-            event.target.reset();
-        }
+        calculateEstimate();
     </script>
 </body>
 </html>
