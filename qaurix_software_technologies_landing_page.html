@@ -961,11 +961,18 @@
         clientProofForm.addEventListener('submit', (submitEvent) => {
             submitEvent.preventDefault();
             const formData = new FormData(clientProofForm);
+            const name = formData.get('name').trim();
+            const role = formData.get('role').trim();
+            const quote = formData.get('quote').trim();
+            if (!name || !role || !quote) {
+                clientProofStatus.textContent = 'Please enter a client name, role/company, and testimonial.';
+                return;
+            }
             const proof = {
                 id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
-                name: formData.get('name').trim(),
-                role: formData.get('role').trim(),
-                quote: formData.get('quote').trim(),
+                name,
+                role,
+                quote,
                 rating: Number(formData.get('rating'))
             };
 
